@@ -1,6 +1,7 @@
 <template>
   <div id="layout-basic">
     <a-layout>
+
       <a-layout-header>
         <a-input
           ref="searchInput"
@@ -13,10 +14,10 @@
 
       <a-layout-content>
         <a-select
-          v-if="search.length > 0"
-          default-value="5"
-          style="width: 120px"
-          @change="handleChange"
+        v-if="search.length > 0"
+        v-model="limit"
+        style="width: 120px"
+        @change="handleChange"
         >
           <a-select-option
             v-for="index in 10"
@@ -27,8 +28,11 @@
           </a-select-option>
         </a-select>
         <div>
-          Mostrar aqui los productos
+          <h1>Mostrar aqui los productos</h1>
           <!-- code / mostrar los productos desde productosOrdenados -->
+          <div v-for="product in productosOrdenados" :key="product.id">
+            <Producto :producto="product" />
+          </div>
         </div>
       </a-layout-content>
     </a-layout>
@@ -37,38 +41,54 @@
 
 <script>
 import { mapState } from 'vuex'
+import Producto from '../components/Producto.vue';
+
 export default {
-  name: 'IndexPage',
-  data() {
-    return {
-      search: ''
-    }
-  },
-  head() {
-    return {
-      title: 'Buscador de productos'
-    }
-  },
-  computed: {
-    ...mapState('busquedas', ['productos']),
-    productosOrdenados() {
-      // Ordener segun el precio de final: `price.finalPrice`
-      return this.productos
-    }
-  },
-  methods: {
-    async buscar() {
-      await this.$store.dispatch('busquedas/obtenerBusqueda', {
-        search: this.search
-      })
+    name: "IndexPage",
+    components:{
+      Producto
     },
-    handleChange(value) {
-      // eslint-disable-next-line no-console
-      console.log(`valor seleccionado ${value}`)
-    }
-  }
+    data() {
+        return {
+            search: "",
+            limit: "all"
+        };
+    },
+    head() {
+        return {
+            title: "Buscador de productos"
+        };
+    },
+    computed: {
+        ...mapState("busquedas", ["productos"]),
+
+        productosOrdenados() {
+            // Ordener segun el precio de final: `price.finalPrice`
+
+            const productosClonados = [...this.productos];
+
+            productosClonados.sort((a, b) => a.price.finalPrice - b.price.finalPrice);
+
+            return productosClonados;
+        }
+    },
+    methods: {
+        async buscar() {
+            await this.$store.dispatch("busquedas/obtenerBusqueda", {
+                search: this.search
+            });
+        },
+        async handleChange(value) {
+          await this.$store.dispatch("busquedas/obtenerBusqueda", {
+            search: this.search,
+            limit: value
+          });
+        }
+    },
 }
 </script>
+
+
 
 <style lang="less" scoped>
 #layout-basic {
