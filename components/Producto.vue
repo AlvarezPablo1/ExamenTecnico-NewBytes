@@ -3,6 +3,7 @@
 		<!--Code-->
 		<section :key="producto.id">
 			<h3>{{ producto.description }}</h3>
+			<img :src="viewImg" alt="Imagen Producto">
 			<h4>{{ producto.brandName }}</h4>
 			<p :style="{'color': changeColor}">{{ producto.price.finalPrice }}</p>
 		</section>	
@@ -35,7 +36,11 @@ export default {
 			}else{
 				return 'red'
 			}
-    }
+    },
+		viewImg() {
+			const img = "https://cache-static.libreopcion.com/img/h_200_" + this.producto.image
+			return img
+		}
   }
 }
 </script>
@@ -43,15 +48,17 @@ export default {
 <style lang="less" scoped>
 
 	.producto{
-	background-color: #f5f5f5;
+	background-color: #ffff;
+	margin: 2rem 3rem;
   padding: 1rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 15px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
 	}
 
+	
+
 	section{
-		border: 1px solid black;
 		margin: 1rem;
 		padding: 1rem;
 	}
@@ -65,5 +72,19 @@ export default {
 		font-size: 1.2rem;
 		font-weight: bold;
 		margin: 0.5rem 0;
+	}
+
+	@media(max-width: 425px){
+		img{
+		width: 100px;
+	}
+		h3{
+			font-size: small;
+		}
+	}
+	@media(min-width: 768px){
+		img{
+		width: 200px;
+	}
 	}
 </style>

@@ -27,10 +27,10 @@
             {{ index }}
           </a-select-option>
         </a-select>
-        <div>
+        <div class="productContainer">
           <h1>Mostrar aqui los productos</h1>
           <!-- code / mostrar los productos desde productosOrdenados -->
-          <div v-for="product in productosOrdenados" :key="product.id">
+          <div v-for="product in productosOrdenados" :key="product.id" >
             <Producto :producto="product" />
           </div>
         </div>
@@ -51,7 +51,7 @@ export default {
     data() {
         return {
             search: "",
-            limit: "all"
+            limit: "all",
         };
     },
     head() {
@@ -91,6 +91,11 @@ export default {
 
 
 <style lang="less" scoped>
+
+.productContainer h1{
+  font-size: 2rem;
+}
+
 #layout-basic {
   text-align: center;
 }
@@ -109,14 +114,5 @@ export default {
 
 #layout-basic .ant-layout-content {
   min-height: 120px;
-  line-height: 120px;
-}
-
-#layout-basic > .ant-layout {
-  margin-bottom: 48px;
-}
-
-#layout-basic > .ant-layout:last-child {
-  margin: 0;
 }
 </style>
